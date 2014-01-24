@@ -117,7 +117,7 @@ processes:
 
 - The `port` key is a special one, incremented by 1 in a loop.
 - The `rails_env` key is taken directly from the options defined and has no special meaning.
-- The `pidfile` and `logfile` are automatically defined based on the process number/name. In this case, it will generate something like `/var/log/myapp/myapp-thin-1.log` and `/var/run/myapp/myapp-thin-1.pid`.
+- The `pidfile` and `logfile` are automatically defined based on the process number/name. In this case, it will generate something like `/var/log/myapp-thin/thin-1.log` and `/var/run/myapp-thin/thin-1.pid`.
 
 ## Contributing
 
