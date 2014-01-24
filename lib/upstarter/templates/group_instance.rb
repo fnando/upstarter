@@ -1,6 +1,6 @@
 module Upstarter
   module Templates
-    class Instance < Base
+    class GroupInstance < Base
       attr_reader :options
 
       def initialize(options)
@@ -8,11 +8,11 @@ module Upstarter
       end
 
       def export_to(dir)
-        create_file file_name, render(:instance), dir
+        create_file file_name, render(:group_instance), dir
       end
 
       def file_name
-        "#{options.name}-#{options.process_name}.conf"
+        "#{options.name}-#{options.process_name}-#{options.process_number}.conf"
       end
 
       def additional_options
@@ -30,16 +30,8 @@ module Upstarter
         "/var/run/#{base_name}.pid"
       end
 
-      def log_dir
-        "/var/log/#{options.parent_name}-#{options.process_name}"
-      end
-
-      def run_dir
-        "/var/run/#{options.parent_name}-#{options.process_name}"
-      end
-
       def base_name
-        "#{options.name}-#{options.process_name}/#{options.process_name}"
+        "#{options.name}-#{options.process_name}/#{options.process_name}-#{options.process_number}"
       end
     end
   end

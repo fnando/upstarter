@@ -6,8 +6,9 @@ module Upstarter
       true
     end
 
-    desc "export PROCESS_FILE [OUTPUT_DIR]", "Export Upstart configuration files"
+    default_task :help
 
+    desc "export PROCESS_FILE [OUTPUT_DIR]", "Export Upstart configuration files"
     def export(process_file, output_dir = nil)
       process_file = File.expand_path(process_file)
       output_dir ||= File.join(File.dirname(process_file), "upstarter")

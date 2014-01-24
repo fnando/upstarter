@@ -2,3 +2,11 @@ description "<%= options.name %>'s <%= options.process_name %> process group"
 
 start on starting <%= options.name %>
 stop on stopping <%= options.name %>
+
+pre-start script
+    mkdir -p <%= log_dir %>
+    chown -R <%= options.user %>. <%= log_dir %>
+
+    mkdir -p <%= run_dir %>
+    chown -R <%= options.user %>. <%= run_dir %>
+end script

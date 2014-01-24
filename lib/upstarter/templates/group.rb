@@ -10,6 +10,14 @@ module Upstarter
       def export_to(dir)
         create_file "#{options.name}-#{options.process_name}.conf", render(:group), dir
       end
+
+      def log_dir
+        "/var/log/#{options.parent_name}-#{options.process_name}"
+      end
+
+      def run_dir
+        "/var/run/#{options.parent_name}-#{options.process_name}"
+      end
     end
   end
 end

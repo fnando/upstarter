@@ -25,7 +25,7 @@ module Upstarter
       end
 
       def interpolate(string)
-        string % options.to_h.merge(additional_options)
+        string.to_s % options.to_h.merge(additional_options)
       end
 
       def normalize_whitespace(text)

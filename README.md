@@ -4,15 +4,7 @@ TODO: Write a gem description
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'upstarter'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Install the gem:
 
     $ gem install upstarter
 
@@ -22,22 +14,24 @@ Create your configuration file, like `upstarter.yml`. Check the following exampl
 
 ```yaml
 name: "myapp"
-env: "production"
-user: "www-data"
-chdir: "/var/www/%{name}/current"
 
 processes:
   thin:
+    chdir: "/var/www/%{name}/current"
+    rails_env: "production"
+    user: "www-data"
     port: 5000
     instances: 3
-    cmd: "bundle exec thin -p %{port} -e %{env} -P %{pidfile} start >> %{logfile} 2>&1"
+    cmd: "bundle exec thin -p %{port} -e %{rails_env} -P %{pidfile} start >> %{logfile} 2>&1"
 
   node:
+    chdir: "/var/www/%{name}-node/current"
+    user: "www-data"
     port: 7000
     cmd: "node server.js >> %{logfile} 2>&1"
 ```
 
-When you run `upstarter upstarter.yml`, the following files will be generated:
+When you run `upstarter export upstarter.yml`, the following files will be generated:
 
 ```text
 upstarter/myapp.conf
@@ -59,6 +53,38 @@ restart myapp
 Since all other files has a dependency on `myapp.conf`, they will be automatically started/stopped/restarted.
 
 The `myapp-thin.conf` handles the process group for `thin`. This based on the number of instances you're going to start.
+
+The group file for Thin's processes will be something like this:
+
+```upstart
+description "myapp's thin process group"
+
+start on starting myapp
+stop on stopping myapp
+
+pre-start script
+  mkdir -p /var/log/myapp-thin
+  chown -R www-data. /var/log/myapp-thin
+
+  mkdir -p /var/run/myapp-thin
+  chown -R www-data. /var/run/myapp-thin
+end script
+```
+
+And each instance will be something like this:
+
+```upstart
+description "myapp's thin instance 1"
+
+start on starting myapp-thin
+stop on stopping myapp-thin
+
+chdir /var/www/myapp/current
+setuid www-data
+respawn
+
+exec bundle exec thin -p 5000 -e production -P /var/run/myapp-thin/thin-1.pid start >> /var/log/myapp-thin/thin-1.log 2>&1
+```
 
 The following keywords are directly mapped into the YAML structure:
 

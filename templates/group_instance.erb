@@ -1,14 +1,4 @@
-description "<%= options.name %>'s <%= options.process_name %> instance"
-
-pre-start script
-    mkdir -p <%= log_dir %>
-    chown -R <%= options.user %>. <%= log_dir %>
-
-    mkdir -p <%= run_dir %>
-    chown -R <%= options.user %>. <%= run_dir %>
-
-    <%= interpolate options.pre_start if options.pre_start %>
-end script
+description "<%= options.name %>'s <%= options.process_name %> instance <%= options.process_number %>"
 
 <% options.env.each do |name, value| %>
   env <%= name %>="<%= value %>"
@@ -28,6 +18,12 @@ respawn
 <% if options.script %>
   script
     <%= interpolate options.script %>
+  end script
+<% end %>
+
+<% if options.pre_start %>
+  pre-start script
+    <%= interpolate options.pre_start %>
   end script
 <% end %>
 

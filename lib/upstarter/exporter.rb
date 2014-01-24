@@ -52,6 +52,10 @@ module Upstarter
     end
 
     def export_group(process_options)
+      process_options = OpenStruct.new(
+        process_options.to_h.merge(process_options.processes[process_options.process_name])
+      )
+
       Templates::Group.new(process_options).export_to(output_dir)
     end
 
@@ -59,7 +63,7 @@ module Upstarter
       process_options.parent_name = "#{process_options.name}-#{process_options.process_name}"
 
       process_options.instances.times do
-        Templates::Instance.new(process_options).export_to(output_dir)
+        Templates::GroupInstance.new(process_options).export_to(output_dir)
 
         process_options.process_number += 1
         process_options.port += 1

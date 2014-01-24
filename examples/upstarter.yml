@@ -16,3 +16,4 @@ processes:
     port: 7000
     exec: "node server.js >> %{logfile} 2>&1"
     chdir: "/var/www/%{name}/current/node"
+    user: "www-data"

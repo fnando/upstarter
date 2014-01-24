@@ -2,11 +2,3 @@ description "<%= options.name %> main process"
 
 start on runlevel [2345]
 stop on runlevel [016]
-
-pre-start script
-  mkdir -p /var/log/<%= options.name %>
-  chown -R <%= options.user %>. /var/log/<%= options.name %>
-
-  mkdir -p /var/run/<%= options.name %>
-  chown -R <%= options.user %>. /var/run/<%= options.name %>
-end script
