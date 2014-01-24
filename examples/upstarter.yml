@@ -1,0 +1,18 @@
+name: "myapp"
+
+processes:
+  thin:
+    env:
+      home: /home/foo
+      foo: /var/foo
+    port: 5000
+    instances: 3
+    rails_env: "production"
+    user: "www-data"
+    chdir: "/var/www/%{name}/current"
+    exec: "bundle exec thin -p %{port} -e %{rails_env} -P %{pidfile} start >> %{logfile} 2>&1"
+
+  node:
+    port: 7000
+    exec: "node server.js >> %{logfile} 2>&1"
+    chdir: "/var/www/%{name}/current/node"

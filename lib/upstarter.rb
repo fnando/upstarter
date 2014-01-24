@@ -1,0 +1,13 @@
+require "thor"
+require "yaml"
+require "erubis"
+require "pathname"
+require "ostruct"
+
+require "upstarter/cli"
+require "upstarter/exporter"
+require "upstarter/templates/base"
+require "upstarter/templates/master"
+require "upstarter/templates/instance"
+require "upstarter/templates/group"
+require "upstarter/version"

@@ -1,0 +1,52 @@
+<% if group? %>
+  description "<%= options.name %>'s <%= options.process_name %> instance <%= options.process_number %>"
+<% else %>
+  description "<%= options.name %>'s <%= options.process_name %> instance"
+<% end %>
+
+<% options.env.each do |name, value| %>
+  env <%= name %>="<%= value %>"
+<% end if options.env %>
+
+start on starting <%= options.parent_name %>
+stop on stopping <%= options.parent_name %>
+
+chdir <%= interpolate options.chdir %>
+setuid <%= options.user %>
+respawn
+
+<% if options.exec %>
+  exec <%= interpolate options.exec %>
+<% end %>
+
+<% if options.script %>
+  script
+    <%= interpolate options.script %>
+  end script
+<% end %>
+
+<% if options.pre_start %>
+  pre-start script
+    <%= interpolate options.pre_start %>
+  end script
+<% end %>
+
+<% if options.pre_stop %>
+  pre-stop script
+    <%= interpolate options.pre_stop %>
+  end script
+<% end %>
+
+<% if options.post_start %>
+  post-start script
+    <%= interpolate options.post_start %>
+  end script
+<% end %>
+
+<% if options.post_stop %>
+  post-stop script
+    <%= interpolate options.post_stop %>
+  end script
+<% end %>
+
+<%= interpolate(options.raw) if options.raw %>
